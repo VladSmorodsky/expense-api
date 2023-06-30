@@ -23,7 +23,8 @@ class ExpenseFactory extends Factory
             'description' => fake()->paragraph(),
             'price' => fake()->numberBetween(1, 100),
             'user_id' => User::factory(),
-            'category_id' => Category::factory()
+            'category_id' => Category::factory(),
+            'created_at' => fake()->dateTimeBetween('-5 months', 'now')
         ];
     }
 }
