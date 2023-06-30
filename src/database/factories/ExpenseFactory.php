@@ -19,9 +19,8 @@ class ExpenseFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->sentence(),
-            'description' => fake()->paragraph(),
-            'price' => fake()->numberBetween(1, 100),
+            'description' => fake()->sentence(),
+            'price' => fake()->randomFloat(2, 1, 100),
             'user_id' => User::factory(),
             'category_id' => Category::factory(),
             'created_at' => fake()->dateTimeBetween('-5 months', 'now')
