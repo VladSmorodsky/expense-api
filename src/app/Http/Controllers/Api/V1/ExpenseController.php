@@ -10,15 +10,21 @@ use App\Http\Resources\ExpenseResource;
 use App\Models\Expense;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class ExpenseController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Expense::class, 'expense');
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index():ExpenseCollection
     {
-        return new ExpenseCollection(Expense::all());
+        return new ExpenseCollection(Expense::where('user_id', Auth::id())->paginate());
     }
 
     /**
@@ -35,6 +41,7 @@ class ExpenseController extends Controller
     public function store(StoreExpenseRequest $request): ExpenseResource
     {
         $validated = $request->validated();
+        $validated['user_id'] = Auth::id();
 
         $expense = Expense::create($validated);
 
@@ -63,6 +70,7 @@ class ExpenseController extends Controller
     public function update(UpdateExpenseRequest $request, Expense $expense): ExpenseResource
     {
         $validated = $request->validated();
+        $validated['user_id'] = Auth::id();
 
         $expense->update($validated);
 
