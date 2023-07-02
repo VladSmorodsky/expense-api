@@ -22,8 +22,7 @@ class UpdateExpenseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'sometimes|required',
-            'category_id' => 'sometimes',
+            'category_id' => 'sometimes|nullable',
             'description' => 'sometimes|nullable',
             'price' => 'sometimes|required|decimal:0,4',
             'created_at' => 'sometimes|date'
