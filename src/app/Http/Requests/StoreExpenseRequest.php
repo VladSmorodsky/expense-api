@@ -22,7 +22,6 @@ class StoreExpenseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required',
             'category_id' => 'nullable',
             'description' => 'nullable',
             'price' => 'required|decimal:0,4'
