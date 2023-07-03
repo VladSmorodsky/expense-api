@@ -41,9 +41,8 @@ class ExpenseController extends Controller
     public function store(StoreExpenseRequest $request): ExpenseResource
     {
         $validated = $request->validated();
-        $validated['user_id'] = Auth::id();
 
-        $expense = Expense::create($validated);
+        $expense = Auth::user()->expenses()->create($validated);
 
         return new ExpenseResource($expense);
     }
