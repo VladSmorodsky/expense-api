@@ -11,6 +11,7 @@ use App\Models\Expense;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class ExpenseController extends Controller
 {
@@ -24,7 +25,10 @@ class ExpenseController extends Controller
      */
     public function index():ExpenseCollection
     {
-        return new ExpenseCollection(Expense::where('user_id', Auth::id())->paginate());
+        $expenses = QueryBuilder::for(Expense::class)
+            ->allowedFilters(['created_at', 'price', 'category_id'])
+            ->allowedIncludes(['category']);
+        return new ExpenseCollection($expenses->where('user_id', Auth::id())->paginate());
     }
 
     /**
