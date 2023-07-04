@@ -14,6 +14,11 @@ class ExpenseCollection extends ResourceCollection
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'data' => $this->collection,
+            'links' => $request->links,
+            'meta' => $request->meta,
+            'sum' => $this->collection->sum('price')
+        ];
     }
 }
