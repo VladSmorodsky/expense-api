@@ -22,8 +22,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('login', [AuthController::class, 'login']);
-Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::post('register', [AuthController::class, 'register']);
 
-Route::apiResource('expenses', ExpenseController::class)->middleware('auth:sanctum');
-Route::apiResource('categories', CategoryController::class)->only(['index', 'show'])->middleware('auth:sanctum');
+Route::middleware('auth:sanctum')->group(function() {
+    Route::post('logout', [AuthController::class, 'logout']);
+    Route::apiResource('expenses', ExpenseController::class);
+    Route::apiResource('categories', CategoryController::class)->only(['index', 'show']);
+});
