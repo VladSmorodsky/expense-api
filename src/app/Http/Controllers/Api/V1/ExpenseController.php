@@ -8,9 +8,9 @@ use App\Http\Requests\UpdateExpenseRequest;
 use App\Http\Resources\ExpenseCollection;
 use App\Http\Resources\ExpenseResource;
 use App\Models\Expense;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class ExpenseController extends Controller
@@ -26,8 +26,14 @@ class ExpenseController extends Controller
     public function index():ExpenseCollection
     {
         $expenses = QueryBuilder::for(Expense::class)
-            ->allowedFilters(['created_at', 'price', 'category_id'])
+            ->allowedFilters([
+                'created_at', 'price', 'category_id',
+                AllowedFilter::scope('current_created_at', null, 'currentMonth, currentYear')
+            ])
+            ->defaultSort('-created_at')
+            ->allowedSorts(['price', 'created_at'])
             ->allowedIncludes(['category']);
+
         return new ExpenseCollection($expenses->where('user_id', Auth::id())->paginate());
     }
 
