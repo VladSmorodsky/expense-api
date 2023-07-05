@@ -18,7 +18,7 @@ class ExpenseCollection extends ResourceCollection
             'data' => $this->collection,
             'links' => $request->links,
             'meta' => $request->meta,
-            'sum' => $this->collection->sum('price')
+            'sum' => round($this->collection->sum('price'), 2)
         ];
     }
 }
