@@ -22,7 +22,7 @@ class Category extends Model
     public function scopeSumByCategory(Builder $query)
     {
         return $query
-            ->join('expenses', 'expenses.category_id', '=', 'categories.id')
+            ->leftJoin('expenses', 'expenses.category_id', '=', 'categories.id')
             ->groupBy('categories.id', 'categories.name', 'expenses.user_id')
             ->having('expenses.user_id', Auth::id())
             ->selectRaw('categories.id, categories.name, sum(expenses.price) as sum');
