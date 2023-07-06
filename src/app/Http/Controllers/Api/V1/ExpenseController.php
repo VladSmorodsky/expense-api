@@ -17,6 +17,7 @@ class ExpenseController extends Controller
 {
     public function __construct()
     {
+        $this->middleware('throttle:api')->only(['store', 'update', 'delete']);
         $this->authorizeResource(Expense::class, 'expense');
     }
 
